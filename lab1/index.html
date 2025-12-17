@@ -3,299 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VIT-AP University | Home</title>
+  <title>Student Marksheet Table</title>
   <style>
-    :root {
-      --blue: #1f3b8a;
-      --orange: #f59e0b;
-      --gray: #f6f7fb;
-      --text: #1f2937;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      color: var(--text);
-      background: var(--gray);
-      line-height: 1.6;
+      font-family: Arial, sans-serif;
+      margin: 32px;
+      background: #f7f7f7;
     }
-    a { color: inherit; text-decoration: none; }
-    header {
-      background: linear-gradient(135deg, #0f172a, var(--blue));
-      color: #fff;
-      padding: 16px 32px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    h1 {
+      margin-bottom: 16px;
     }
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 700;
-      letter-spacing: 0.4px;
-    }
-    .brand span { font-size: 14px; font-weight: 500; opacity: 0.9; }
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 18px;
-      font-weight: 600;
-      flex-wrap: wrap;
-    }
-    nav a { padding: 6px 10px; border-radius: 6px; transition: background 0.2s ease; }
-    nav a:hover { background: rgba(255,255,255,0.14); }
-    .hero {
-      background: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-      min-height: 380px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, rgba(15,23,42,0.85), rgba(31,59,138,0.7));
-    }
-    .hero-content {
-      position: relative;
-      color: #fff;
-      text-align: center;
-      max-width: 880px;
-      padding: 40px 24px;
-    }
-    .hero h1 { font-size: clamp(30px, 4vw, 44px); margin-bottom: 12px; }
-    .hero p { font-size: 17px; opacity: 0.95; margin-bottom: 18px; }
-    .cta {
-      display: inline-flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .btn {
-      background: var(--orange);
-      color: #111;
-      padding: 12px 18px;
-      border-radius: 8px;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-    .btn.secondary {
-      background: transparent;
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.6);
-    }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
-    main { padding: 40px 24px 60px; max-width: 1200px; margin: 0 auto; }
-    .section {
+    table {
+      width: 100%;
+      border-collapse: collapse;
       background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-      padding: 28px;
-      margin-bottom: 24px;
     }
-    .section h2 {
-      font-size: 22px;
-      margin-bottom: 14px;
-      color: var(--blue);
+    th, td {
+      border: 1px solid #333;
+      padding: 10px;
+      text-align: left;
     }
-    .grid {
-      display: grid;
-      gap: 16px;
+    thead {
+      background: #e6e6e6;
     }
-    .two { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-    .three { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-    .card {
-      padding: 16px;
-      border-radius: 10px;
-      border: 1px solid #e5e7eb;
-      background: #fff;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .stat {
-      font-size: 32px;
-      font-weight: 800;
-      color: var(--blue);
-    }
-    .tag {
-      display: inline-block;
-      background: #eef2ff;
-      color: var(--blue);
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 12px;
-    }
-    .list { list-style: disc; margin-left: 18px; }
-    footer {
-      background: #0f172a;
-      color: #e5e7eb;
-      padding: 28px 24px;
-    }
-    footer .footer-grid {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      gap: 18px;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    }
-    footer a { color: #c7d2fe; }
   </style>
 </head>
 <body>
-  <header>
-    <div class="topbar">
-      <div class="brand">
-        <div style="width:38px;height:38px;border-radius:8px;background:#fff;color:var(--blue);display:grid;place-items:center;font-weight:800;">V</div>
-        <div>
-          VIT-AP University<br>
-          <span>Amaravati, Andhra Pradesh</span>
-        </div>
-      </div>
-      <nav>
-        <ul>
-          <li><a href="#about">About</a></li>
-          <li><a href="#academics">Academics</a></li>
-          <li><a href="#admissions">Admissions</a></li>
-          <li><a href="#research">Research</a></li>
-          <li><a href="#events">Events</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <section class="hero">
-    <div class="hero-content">
-      <h1>VIT-AP University</h1>
-      <p>An institution of eminence fostering innovation, research, and global learning in the capital region of Andhra Pradesh.</p>
-      <div class="cta">
-        <button class="btn">Apply Now</button>
-        <button class="btn secondary">Brochure</button>
-      </div>
-    </div>
-  </section>
-
-  <main>
-    <section id="about" class="section">
-      <h2>About VIT-AP</h2>
-      <p>Established in 2017 at Amaravati, VIT-AP offers a multidisciplinary ecosystem that blends world-class infrastructure, experienced faculty, and a strong focus on innovation and entrepreneurship.</p>
-      <div class="grid three" style="margin-top:16px;">
-        <div class="card">
-          <span class="stat">30k+</span>
-          <div class="tag">Students across VIT</div>
-          <p>VIT legacy learners with strong alumni network and industry presence.</p>
-        </div>
-        <div class="card">
-          <span class="stat">200+</span>
-          <div class="tag">Recruiters</div>
-          <p>Top companies visiting for internships and placements every year.</p>
-        </div>
-        <div class="card">
-          <span class="stat">150+</span>
-          <div class="tag">MoUs</div>
-          <p>Global collaborations enabling semester abroad and research immersion.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="academics" class="section">
-      <h2>Schools & Programs</h2>
-      <div class="grid two">
-        <div class="card">
-          <div class="tag">Engineering</div>
-          <ul class="list">
-            <li>B.Tech in CSE, ECE, EEE, Mechanical, Civil</li>
-            <li>Specializations in AI/ML, Data Science, Cyber Security</li>
-          </ul>
-        </div>
-        <div class="card">
-          <div class="tag">Sciences & Business</div>
-          <ul class="list">
-            <li>B.Sc, BBA, B.Com, B.A. (Hons)</li>
-            <li>M.Tech, MBA, M.Sc, integrated programs</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section id="admissions" class="section">
-      <h2>Admissions</h2>
-      <div class="grid two">
-        <div class="card">
-          <div class="tag">UG Admissions</div>
-          <p>Apply through VITEEE / V-SAT. Scholarships available based on merit and performance.</p>
-        </div>
-        <div class="card">
-          <div class="tag">PG & Doctoral</div>
-          <p>GATE / VITMEE / CAT / MAT scores accepted for select programs. Contact admissions for timelines.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="research" class="section">
-      <h2>Research & Innovation</h2>
-      <div class="grid three">
-        <div class="card">
-          <div class="tag">AI & Robotics</div>
-          <p>Centers focusing on AI, deep learning, robotics, and automation projects.</p>
-        </div>
-        <div class="card">
-          <div class="tag">Cyber-Physical Systems</div>
-          <p>Labs for IoT, embedded systems, smart manufacturing, and Industry 4.0.</p>
-        </div>
-        <div class="card">
-          <div class="tag">Entrepreneurship</div>
-          <p>Incubation support, hackathons, and startup mentorship via technology business incubators.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="events" class="section">
-      <h2>Campus Life & Events</h2>
-      <div class="grid two">
-        <div class="card">
-          <div class="tag">VITopia</div>
-          <p>International cultural and sports fest bringing global talent to campus.</p>
-        </div>
-        <div class="card">
-          <div class="tag">V-TAPP</div>
-          <p>Annual tech fest showcasing innovation, research, and student-led projects.</p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer id="contact">
-    <div class="footer-grid">
-      <div>
-        <h3>VIT-AP University</h3>
-        <p>Ainavolu, Beside AP Secretariat<br>Amaravati, Andhra Pradesh - 522237</p>
-      </div>
-      <div>
-        <h3>Connect</h3>
-        <p>Email: <a href="mailto:admission@vitap.ac.in">admission@vitap.ac.in</a><br>Phone: +91 86323 70444</p>
-      </div>
-      <div>
-        <h3>Quick Links</h3>
-        <p><a href="#admissions">Admissions</a> | <a href="#academics">Academics</a> | <a href="#research">Research</a></p>
-      </div>
-    </div>
-  </footer>
+  <h1>Student Marksheet</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Roll No</th>
+        <th>Name</th>
+        <th>Subject 1</th>
+        <th>Subject 2</th>
+        <th>Subject 3</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>101</td>
+        <td>Rajveer Singh</td>
+        <td>86</td>
+        <td>79</td>
+        <td>91</td>
+        <td>256</td>
+      </tr>
+      <tr>
+        <td>102</td>
+        <td>Jithane Reddy</td>
+        <td>74</td>
+        <td>88</td>
+        <td>83</td>
+        <td>245</td>
+      </tr>
+      <tr>
+        <td>103</td>
+        <td>Priya Singh</td>
+        <td>92</td>
+        <td>90</td>
+        <td>95</td>
+        <td>277</td>
+      </tr>
+      <tr>
+        <td>104</td>
+        <td>Arjun Patel</td>
+        <td>68</td>
+        <td>72</td>
+        <td>70</td>
+        <td>210</td>
+      </tr>
+      <tr>
+        <td>105</td>
+        <td>Kavya Iyer</td>
+        <td>81</td>
+        <td>84</td>
+        <td>89</td>
+        <td>254</td>
+      </tr>
+    </tbody>
+  </table>
 </body>
 </html>
 

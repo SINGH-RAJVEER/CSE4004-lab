@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Lineup</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --accent: #ff6a00;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      padding: 40px 24px 64px;
+      margin: 0;
+      color: #1f2933;
+    }
+    h1 {
+      margin: 0 0 8px;
+      text-align: center;
+      font-size: 2rem;
+      letter-spacing: 0.2px;
+    }
+    .intro {
+      max-width: 720px;
+      margin: 0 auto 32px;
+      text-align: center;
+      color: #4b5563;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+    }
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+    .card-content { padding: 16px 16px 18px; flex: 1; }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #fef3c7;
+      color: #92400e;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .title { font-size: 1.1rem; margin: 0 0 8px; }
+    .description { color: #4b5563; margin: 0 0 12px; line-height: 1.45; }
+    .price {
+      font-weight: 700;
+      margin: 0 0 16px;
+      color: #111827;
+      font-size: 1.05rem;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 16px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background 0.2s ease, transform 0.1s ease;
+      font-weight: 600;
+    }
+    .btn:hover { background: #e15c00; }
+    .btn:active { transform: translateY(1px); }
+  </style>
+</head>
+<body>
+  <h1>Featured Cars</h1>
+  <p class="intro">Explore our current lineup of electric, hybrid, and performance cars ready for delivery. Pick your favorite and book a test drive today.</p>
+
+  <div class="grid">
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1200&q=80" alt="Tesla Model 3">
+      <div class="card-content">
+        <span class="badge">Electric</span>
+        <h2 class="title">Tesla Model 3</h2>
+        <p class="description">Long Range AWD with Autopilot, glass roof, and minimalist interior built for daily commuting.</p>
+        <p class="price">From $42,990</p>
+        <a class="btn" href="#">Book a Test Drive</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://source.unsplash.com/1200x800/?ford,bronco,suv" alt="Ford Bronco">
+      <div class="card-content">
+        <span class="badge">Adventure</span>
+        <h2 class="title">Ford Bronco</h2>
+        <p class="description">Rugged 4x4 with removable doors and roof, G.O.A.T. Modes, and trail-ready suspension for weekend escapes.</p>
+        <p class="price">From $38,995</p>
+        <a class="btn" href="#">Book a Test Drive</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://source.unsplash.com/1200x800/?bmw,ix,electric,suv" alt="BMW iX">
+      <div class="card-content">
+        <span class="badge">Luxury EV</span>
+        <h2 class="title">BMW iX</h2>
+        <p class="description">All-electric SAV with dual motors, curved display, and lounge-like cabin crafted for long-distance comfort.</p>
+        <p class="price">From $85,095</p>
+        <a class="btn" href="#">Book a Test Drive</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://source.unsplash.com/1200x800/?toyota,supra,sports-car" alt="Toyota GR Supra">
+      <div class="card-content">
+        <span class="badge">Performance</span>
+        <h2 class="title">Toyota GR Supra</h2>
+        <p class="description">Turbocharged inline-six, rear-wheel drive, and adaptive suspension tuned for agile road and track handling.</p>
+        <p class="price">From $58,745</p>
+        <a class="btn" href="#">Book a Test Drive</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
