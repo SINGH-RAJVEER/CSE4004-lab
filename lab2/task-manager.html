@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+      }
+      h1 {
+        color: #333;
+        margin-bottom: 30px;
+      }
+      .controls {
+        margin-bottom: 30px;
+        display: flex;
+        gap: 10px;
+      }
+      input[type="text"] {
+        padding: 12px 20px;
+        border: 2px solid #ddd;
+        border-radius: 25px;
+        font-size: 16px;
+        width: 300px;
+        outline: none;
+        transition: border-color 0.3s;
+      }
+      input[type="text"]:focus {
+        border-color: #4a90e2;
+      }
+      button {
+        padding: 12px 25px;
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        background-color: #357abd;
+      }
+      .board {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        width: 100%;
+        max-width: 1200px;
+        flex-wrap: wrap;
+      }
+      .column {
+        flex: 1;
+        min-width: 300px;
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .column h3 {
+        margin-top: 0;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #f0f2f5;
+        width: 100%;
+        text-align: center;
+        color: #555;
+      }
+      #todo h3 {
+        border-bottom-color: #ff6b6b;
+        color: #ff6b6b;
+      }
+      #inprogress h3 {
+        border-bottom-color: #feca57;
+        color: #feca57;
+      }
+      #completed h3 {
+        border-bottom-color: #1dd1a1;
+        color: #1dd1a1;
+      }
+
+      .task {
+        background-color: white;
+        border: 1px solid #eee;
+        border-left: 5px solid #ccc;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 10px 0;
+        cursor: grab;
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .task:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .task:active {
+        cursor: grabbing;
+      }
+      .task p {
+        margin: 5px 0;
+      }
+      .task p:first-child {
+        font-weight: bold;
+        font-size: 1.1em;
+        color: #333;
+      }
+      .task p:last-child {
+        font-size: 0.85em;
+        color: #888;
+      }
+      .completed-task {
+        background-color: #f0fff4 !important;
+        border-left-color: #1dd1a1 !important;
+        text-decoration: line-through;
+        opacity: 0.8;
+      }
+      #message {
+        position: fixed;
+        bottom: 30px;
+        background-color: #1dd1a1;
+        color: white;
+        padding: 15px 30px;
+        border-radius: 50px;
+        box-shadow: 0 4px 15px rgba(29, 209, 161, 0.4);
+        font-weight: bold;
+        opacity: 0;
+        transition: opacity 0.5s;
+        pointer-events: none;
+      }
+      #message.show {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Task Board</h1>
+    <div class="controls">
+      <input type="text" id="taskInput" placeholder="What needs to be done?" />
+      <button id="addTask">Add Task</button>
+    </div>
+
+    <div class="board">
+      <div
+        class="column"
+        id="todo"
+        ondrop="drop(event)"
+        ondragover="allowDrop(event)"
+      >
+        <h3>To Do</h3>
+      </div>
+      <div
+        class="column"
+        id="inprogress"
+        ondrop="drop(event)"
+        ondragover="allowDrop(event)"
+      >
+        <h3>In Progress</h3>
+      </div>
+      <div
+        class="column"
+        id="completed"
+        ondrop="drop(event)"
+        ondragover="allowDrop(event)"
+      >
+        <h3>Completed</h3>
+      </div>
+    </div>
+
+    <div id="message"></div>
+
+    <script>
+      </head>
+      <body>
+        <h1>Task Manager</h1>
+        <input type="text" id="taskInput" placeholder="Enter task name" />
+        <button id="addTask">Add Task</button>
+
+        <div class="board">
+          <div
+            class="column"
+            id="todo"
+            ondrop="drop(event)"
+            ondragover="allowDrop(event)"
+          >
+            <h3>To Do</h3>
+          </div>
+          <div
+            class="column"
+            id="inprogress"
+            ondrop="drop(event)"
+            ondragover="allowDrop(event)"
+          >
+            <h3>In Progress</h3>
+          </div>
+          <div
+            class="column"
+            id="completed"
+            ondrop="drop(event)"
+            ondragover="allowDrop(event)"
+          >
+            <h3>Completed</h3>
+          </div>
+        </div>
+
+        <div id="message"></div>
+
+        <script>
+          let taskId = 0;
+
+          document.getElementById("addTask").addEventListener("click", () => {
+            const taskName = document.getElementById("taskInput").value;
+            if (taskName) {
+              const task = document.createElement("div");
+              task.className = "task";
+              task.draggable = true;
+              task.id = "task" + taskId++;
+              task.innerHTML = `<p>${taskName}</p><p>${new Date().toLocaleDateString()}</p>`;
+              task.addEventListener("dragstart", drag);
+              document.getElementById("todo").appendChild(task);
+              document.getElementById("taskInput").value = "";
+            }
+          });
+
+          function allowDrop(ev) {
+            ev.preventDefault();
+          }
+
+          function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+          }
+
+          function drop(ev) {
+            ev.preventDefault();
+            const data = ev.dataTransfer.getData("text");
+            const task = document.getElementById(data);
+            ev.target.appendChild(task);
+            if (ev.target.id === "completed") {
+              task.classList.add("completed");
+              document.getElementById("message").textContent =
+                "Task Completed Successfully";
+              setTimeout(() => {
+                document.getElementById("message").textContent = "";
+              }, 3000);
+            } else {
+              task.classList.remove("completed");
+            }
+          }
+    </script>
+  </body>
+</html>

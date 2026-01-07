@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Management System</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f7f6;
+        margin: 0;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #333;
+      }
+      h1 {
+        color: #2c3e50;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+      .container {
+        display: flex;
+        gap: 40px;
+        width: 100%;
+        max-width: 1200px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .form-container,
+      .table-container {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        flex: 1;
+        min-width: 350px;
+      }
+
+      /* Form Styling */
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+      label {
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #555;
+      }
+      input {
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+      }
+      input:focus {
+        border-color: #3498db;
+        outline: none;
+      }
+      button[type="submit"] {
+        background-color: #3498db;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      button[type="submit"]:hover {
+        background-color: #2980b9;
+      }
+
+      /* Table Styling */
+      h2 {
+        margin-top: 0;
+        color: #34495e;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 12px 15px;
+        border-bottom: 1px solid #eee;
+      }
+      th {
+        background-color: #f8f9fa;
+        color: #7f8c8d;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85em;
+      }
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+      .delete-btn {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: background-color 0.2s;
+      }
+      .delete-btn:hover {
+        background-color: #c0392b;
+      }
+      #clearAll {
+        background-color: #95a5a6;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        float: right;
+        transition: background-color 0.3s;
+      }
+      #clearAll:hover {
+        background-color: #7f8c8d;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>User Registration & Management</h1>
+
+    <div class="container">
+      <div class="form-container">
+        <h2>Register New User</h2>
+        <form id="registrationForm">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" placeholder="John Doe" required />
+
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="john@example.com"
+            required
+          />
+
+          <label for="mobile">Mobile Number</label>
+          <input type="tel" id="mobile" placeholder="1234567890" required />
+
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Min. 6 characters"
+            required
+          />
+
+          <button type="submit">Create Account</button>
+        </form>
+      </div>
+
+      <div class="table-container">
+        <h2>Registered Users</h2>
+        <table id="userTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Mobile</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <button id="clearAll">Clear All Database</button>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById("registrationForm");
+      const tableBody = document.querySelector("#userTable tbody");
+      const clearAllBtn = document.getElementById("clearAll");
+
+      function loadUsers() {
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        tableBody.innerHTML = "";
+        users.forEach((user, index) => {
+          const row = tableBody.insertRow();
+          row.insertCell(0).textContent = user.name;
+          row.insertCell(1).textContent = user.email;
+                row.insertCell(2).textContent = user.mobile;
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.onclick = () => deleteUser(index);
+                row.insertCell(3).appendChild(deleteBtn);
+            });
+        }
+      }
+
+      function deleteUser(index) {
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        users.splice(index, 1);
+        localStorage.setItem("users", JSON.stringify(users));
+        loadUsers();
+      }
+
+      clearAllBtn.addEventListener("click", () => {
+        localStorage.removeItem("users");
+        loadUsers();
+      });
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const mobile = document.getElementById("mobile").value;
+        const password = document.getElementById("password").value;
+
+        if (!name || !email || !mobile || !password) {
+          alert("All fields are mandatory");
+          return;
+        }
+        if (mobile.length !== 10 || isNaN(mobile)) {
+          alert("Mobile number must be 10 digits");
+          return;
+        }
+        if (password.length < 6) {
+          alert("Password must be at least 6 characters");
+          return;
+        }
+
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        if (users.some((user) => user.email === email)) {
+          alert("Email already registered");
+          return;
+        }
+
+        users.push({ name, email, mobile, password });
+        localStorage.setItem("users", JSON.stringify(users));
+        form.reset();
+        loadUsers();
+      });
+
+      loadUsers();
+    </script>
+  </body>
+</html>

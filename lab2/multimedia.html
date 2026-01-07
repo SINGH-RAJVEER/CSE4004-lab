@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multimedia Experience</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #1a1a1a;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+      }
+      h1 {
+        color: #00d2ff;
+        text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        margin-bottom: 40px;
+      }
+      .media-container {
+        background: #2a2a2a;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        margin-bottom: 30px;
+        width: 80%;
+        max-width: 600px;
+        text-align: center;
+        transition: transform 0.3s ease;
+      }
+      .media-container:hover {
+        transform: translateY(-5px);
+      }
+      h2 {
+        color: #ff0076;
+        border-bottom: 2px solid #ff0076;
+        display: inline-block;
+        padding-bottom: 5px;
+        margin-top: 0;
+      }
+      audio,
+      video {
+        width: 100%;
+        margin-top: 15px;
+        border-radius: 8px;
+        outline: none;
+      }
+      .time-display {
+        margin-top: 10px;
+        font-size: 0.9em;
+        color: #ccc;
+        font-variant-numeric: tabular-nums;
+      }
+      .time-display span {
+        color: #00d2ff;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>HTML5 Multimedia Hub</h1>
+
+    <div class="media-container">
+      <h2>Audio Player</h2>
+      <audio id="audioPlayer" controls>
+        <source src="audio.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+      <p class="time-display">Current Time: <span id="audioTime">0:00</span></p>
+    </div>
+
+    <div class="media-container">
+      <h2>Video Player</h2>
+      <video id="videoPlayer" controls>
+        <source src="video.mp4" type="video/mp4" />
+        Your browser does not support the video element.
+      </video>
+      <p class="time-display">Current Time: <span id="videoTime">0:00</span></p>
+    </div>
+
+    <script>
+      const audioPlayer = document.getElementById("audioPlayer");
+      const videoPlayer = document.getElementById("videoPlayer");
+      const audioTime = document.getElementById("audioTime");
+      const videoTime = document.getElementById("videoTime");
+
+      function updateTime(player, timeElement) {
+        player.addEventListener("timeupdate", () => {
+          const minutes = Math.floor(player.currentTime / 60);
+          const seconds = Math.floor(player.currentTime % 60);
+          timeElement.textContent = `${minutes}:${seconds
+            .toString()
+            .padStart(2, "0")}`;
+        });
+      }
+
+      updateTime(audioPlayer, audioTime);
+      updateTime(videoPlayer, videoTime);
+    </script>
+  </body>
+</html>
