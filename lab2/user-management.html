@@ -195,18 +195,17 @@
           const row = tableBody.insertRow();
           row.insertCell(0).textContent = user.name;
           row.insertCell(1).textContent = user.email;
-                row.insertCell(2).textContent = user.mobile;
-                const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = 'Delete';
-                deleteBtn.className = 'delete-btn';
-                deleteBtn.onclick = () => deleteUser(index);
-                row.insertCell(3).appendChild(deleteBtn);
-            });
-        }
+          row.insertCell(2).textContent = user.mobile;
+          const deleteBtn = document.createElement("button");
+          deleteBtn.textContent = "Delete";
+          deleteBtn.className = "delete-btn";
+          deleteBtn.onclick = () => deleteUser(index);
+          row.insertCell(3).appendChild(deleteBtn);
+        });
       }
 
       function deleteUser(index) {
-        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const users = JSON.parse(localStorage.getItem("users"));
         users.splice(index, 1);
         localStorage.setItem("users", JSON.stringify(users));
         loadUsers();
