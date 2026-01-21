@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multi-Stage Registration</title>
+    <style>
+        :root {
+        --brand-color: #6c5ce7;
+        --brand-dark: #a29bfe;
+        --gray: #b2bec3;
+        --text: #2d3436;
+        }
+
+        body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(135deg, #74ebd5 0%, #acb6e5 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
+
+        .workflow-container {
+        background: white;
+        padding: 2.5rem;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        }
+
+        h1 {
+        text-align: center;
+        color: var(--text);
+        margin-bottom: 2rem;
+        }
+
+        .progress-container {
+        position: relative;
+        margin-bottom: 3rem;
+        }
+
+        .progress-bar-bg {
+        background: #dfe6e9;
+        height: 4px;
+        border-radius: 2px;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        z-index: 1;
+        }
+
+        .progress-bar-fill {
+        background: var(--brand-color);
+        height: 100%;
+        width: 0%;
+        transition: width 0.3s ease;
+        }
+
+        .steps-indicator {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        z-index: 2;
+        }
+
+        .step {
+        background: #dfe6e9;
+        color: var(--text);
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        transition: all 0.3s;
+        }
+
+        .step.active {
+        background: var(--brand-color);
+        color: white;
+        transform: scale(1.1);
+        }
+
+        .stage h2 {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        color: #636e72;
+        }
+
+        .input-group {
+        margin-bottom: 1rem;
+        }
+
+        .input-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--text);
+        }
+
+        .input-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #dfe6e9;
+        border-radius: 5px;
+        box-sizing: border-box;
+        }
+
+        .input-group input:focus {
+        outline: none;
+        border-color: var(--brand-color);
+        }
+
+        .error {
+        color: #d63031;
+        font-size: 0.8rem;
+        display: block;
+        height: 1rem;
+        }
+
+        .controls {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+        }
+
+        .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        background: var(--brand-color);
+        color: white;
+        }
+
+        .btn.disabled {
+        background: var(--gray);
+        cursor: not-allowed;
+        }
+
+        .hidden {
+        display: none;
+        }
+
+        .summary-box {
+        background: #f1f2f6;
+        padding: 1rem;
+        border-radius: 5px;
+        font-size: 0.9rem;
+        }
+
+        .summary-row {
+        margin-bottom: 5px;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="workflow-container">
+      <h1>Account Setup</h1>
+
+      <div class="progress-container">
+        <div class="progress-bar-bg">
+          <div id="progress-bar" class="progress-bar-fill"></div>
+        </div>
+        <div class="steps-indicator">
+          <span class="step active" data-step="1">1</span>
+          <span class="step" data-step="2">2</span>
+          <span class="step" data-step="3">3</span>
+          <span class="step" data-step="4">4</span>
+        </div>
+      </div>
+
+      <form id="multiStepForm">
+        <div class="stage" id="stage1">
+          <h2>Step 1: Personal Details</h2>
+          <div class="input-group">
+            <label>First Name</label>
+            <input type="text" id="fname" required />
+            <small class="error" id="err-fname"></small>
+          </div>
+          <div class="input-group">
+            <label>Last Name</label>
+            <input type="text" id="lname" required />
+            <small class="error" id="err-lname"></small>
+          </div>
+        </div>
+
+        <div class="stage hidden" id="stage2">
+          <h2>Step 2: Contact Info</h2>
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="email" required />
+            <small class="error" id="err-email"></small>
+          </div>
+          <div class="input-group">
+            <label>Phone</label>
+            <input type="tel" id="phone" placeholder="123-456-7890" />
+            <small class="error" id="err-phone"></small>
+          </div>
+        </div>
+
+        <div class="stage hidden" id="stage3">
+          <h2>Step 3: Security</h2>
+          <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="pass" />
+            <small class="error" id="err-pass"></small>
+          </div>
+          <div class="input-group">
+            <label>Confirm Password</label>
+            <input type="password" id="cpass" />
+            <small class="error" id="err-cpass"></small>
+          </div>
+        </div>
+
+        <div class="stage hidden" id="stage4">
+          <h2>Step 4: Review Details</h2>
+          <div id="summary-content" class="summary-box">
+          </div>
+          <div class="input-group">
+            <label>
+              <input type="checkbox" id="terms" /> I agree to terms and
+              conditions
+            </label>
+            <small class="error" id="err-terms"></small>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button type="button" id="prevBtn" class="btn disabled" disabled>
+            Previous
+          </button>
+          <button type="button" id="nextBtn" class="btn">Next</button>
+          <button type="submit" id="submitBtn" class="btn hidden">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        let currentStage = 1;
+        const totalStages = 4;
+        const formData = {};
+
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const submitBtn = document.getElementById("submitBtn");
+        const progressBar = document.getElementById("progress-bar");
+        const steps = document.querySelectorAll(".step");
+
+        function updateUI() {
+            // Show/Hide Stages
+            for (let i = 1; i <= totalStages; i++) {
+            const el = document.getElementById(`stage${i}`);
+            if (i === currentStage) el.classList.remove("hidden");
+            else el.classList.add("hidden");
+            }
+
+            // Update Progress
+            const percent = ((currentStage - 1) / (totalStages - 1)) * 100;
+            progressBar.style.width = percent + "%";
+
+            // Update Steps
+            steps.forEach((step, idx) => {
+            if (idx + 1 <= currentStage) step.classList.add("active");
+            else step.classList.remove("active");
+            });
+
+            // Buttons
+            if (currentStage === 1) prevBtn.classList.add("disabled", "disabled");
+            else prevBtn.classList.remove("disabled");
+
+            if (currentStage === 1) prevBtn.disabled = true;
+            else prevBtn.disabled = false;
+
+            if (currentStage === totalStages) {
+            nextBtn.classList.add("hidden");
+            submitBtn.classList.remove("hidden");
+            renderSummary();
+            } else {
+            nextBtn.classList.remove("hidden");
+            submitBtn.classList.add("hidden");
+            }
+        }
+
+        function setError(id, msg) {
+            document.getElementById(id).textContent = msg;
+            return false;
+        }
+
+        function clearErrors() {
+            document.querySelectorAll(".error").forEach((e) => (e.textContent = ""));
+        }
+
+        function validateStage1() {
+            let valid = true;
+            const fname = document.getElementById("fname").value.trim();
+            const lname = document.getElementById("lname").value.trim();
+
+            if (fname.length < 2)
+            valid = setError("err-fname", "Required (min 2 chars)");
+            if (lname.length < 2)
+            valid = setError("err-lname", "Required (min 2 chars)");
+
+            if (valid) {
+            formData.fname = fname;
+            formData.lname = lname;
+            }
+            return valid;
+        }
+
+        function validateStage2() {
+            let valid = true;
+            const email = document.getElementById("email").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            // Simple Phone (10 digits)
+            const phoneRegex = /^\d{3}[-.]?\d{3}[-.]?\d{4}$/;
+
+            if (!emailRegex.test(email)) valid = setError("err-email", "Invalid email");
+            if (!phoneRegex.test(phone))
+            valid = setError("err-phone", "Invalid phone (XXX-XXX-XXXX)");
+
+            if (valid) {
+            formData.email = email;
+            formData.phone = phone;
+            }
+            return valid;
+        }
+
+        function validateStage3() {
+            let valid = true;
+            const pass = document.getElementById("pass").value;
+            const cpass = document.getElementById("cpass").value;
+
+            if (pass.length < 6) valid = setError("err-pass", "Min 6 chars");
+            if (pass !== cpass) valid = setError("err-cpass", "Passwords do not match");
+
+            if (valid) {
+            formData.password = pass; // Ideally hash, but client-side only here
+            }
+            return valid;
+        }
+
+        function validateStage4() {
+            const terms = document.getElementById("terms").checked;
+            if (!terms) {
+            return setError("err-terms", "You must agree to terms");
+            }
+            return true;
+        }
+
+        function renderSummary() {
+            const container = document.getElementById("summary-content");
+            container.innerHTML = `
+                    <div class="summary-row"><b>Name:</b> ${formData.fname} ${formData.lname}</div>
+                    <div class="summary-row"><b>Email:</b> ${formData.email}</div>
+                    <div class="summary-row"><b>Phone:</b> ${formData.phone}</div>
+                `;
+        }
+
+        nextBtn.addEventListener("click", () => {
+            clearErrors();
+            let isValid = false;
+
+            if (currentStage === 1) isValid = validateStage1();
+            else if (currentStage === 2) isValid = validateStage2();
+            else if (currentStage === 3) isValid = validateStage3();
+
+            if (isValid) {
+            currentStage++;
+            updateUI();
+            }
+        });
+
+        prevBtn.addEventListener("click", () => {
+            if (currentStage > 1) {
+            currentStage--;
+            updateUI();
+            }
+        });
+
+        document.getElementById("multiStepForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            if (validateStage4()) {
+            alert("Form Submitted Successfully!");
+            }
+        });
+
+        updateUI();
+        });
+    </script>
+  </body>
+</html>

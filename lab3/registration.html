@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adaptive Registration System</title>
+    <style>
+      :root {
+        --primary-color: #6c5ce7;
+        --secondary-color: #a29bfe;
+        --bg-color: #dfe6e9;
+        --form-bg: #ffffff;
+        --text-color: #2d3436;
+        --error-color: #d63031;
+        --success-color: #00b894;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--bg-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        background-color: var(--form-bg);
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+        border-top: 5px solid var(--primary-color);
+      }
+
+      h1 {
+        text-align: center;
+        color: var(--text-color);
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.2rem;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text-color);
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      input[type="number"],
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #b2bec3;
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: var(--primary-color);
+        outline: none;
+      }
+
+      input.invalid {
+        border-color: var(--error-color);
+      }
+
+      input.valid {
+        border-color: var(--success-color);
+      }
+
+      .error-msg {
+        color: var(--error-color);
+        font-size: 0.85rem;
+        margin-top: 5px;
+        display: block;
+        height: 1rem;
+      }
+
+      .checkbox-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .checkbox-group label {
+        font-weight: normal;
+        background: #f1f2f6;
+        padding: 5px 10px;
+        border-radius: 20px;
+        cursor: pointer;
+        border: 1px solid transparent;
+      }
+
+      .checkbox-group input:checked + label,
+      .checkbox-group label:has(input:checked) {
+        background: var(--secondary-color);
+        color: white;
+      }
+
+      .requirements {
+        font-size: 0.8rem;
+        color: #636e72;
+        margin-top: 5px;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #5849be;
+      }
+
+      button:disabled {
+        background-color: #b2bec3;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Register</h1>
+      <form id="registrationForm" novalidate>
+        <div class="form-group">
+          <label for="role">Select Role:</label>
+          <select id="role" name="role">
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <!-- Dynamic Field Container -->
+        <div class="form-group" id="dynamicFieldContainer">
+          <!-- Injected via JS -->
+        </div>
+
+        <div class="form-group">
+          <label for="name">Full Name:</label>
+          <input type="text" id="name" name="name" required />
+          <span class="error-msg" id="nameError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address:</label>
+          <input type="email" id="email" name="email" required />
+          <span class="error-msg" id="emailError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="age">Age:</label>
+          <input type="number" id="age" name="age" required />
+          <span class="error-msg" id="ageError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required />
+          <div id="passwordRequirements" class="requirements"></div>
+          <span class="error-msg" id="passwordError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password:</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            required
+          />
+          <span class="error-msg" id="confirmPasswordError"></span>
+        </div>
+
+        <div class="form-group" id="skillsContainer">
+          <label>Skills (Select at least 2):</label>
+          <div class="checkbox-group">
+            <label
+              ><input type="checkbox" name="skills" value="HTML" /> HTML</label
+            >
+            <label
+              ><input type="checkbox" name="skills" value="CSS" /> CSS</label
+            >
+            <label
+              ><input type="checkbox" name="skills" value="JavaScript" />
+              JavaScript</label
+            >
+            <label
+              ><input type="checkbox" name="skills" value="Python" />
+              Python</label
+            >
+            <label
+              ><input type="checkbox" name="skills" value="Java" /> Java</label
+            >
+          </div>
+          <span class="error-msg" id="skillsError"></span>
+        </div>
+
+        <button type="submit" id="submitBtn">Create Account</button>
+      </form>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("registrationForm");
+        const roleSelect = document.getElementById("role");
+        const dynamicFieldContainer = document.getElementById(
+          "dynamicFieldContainer",
+        );
+        const nameInput = document.getElementById("name");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const confirmPasswordInput = document.getElementById("confirmPassword");
+        const ageInput = document.getElementById("age");
+        const submitBtn = document.getElementById("submitBtn");
+        const passwordRequirements = document.getElementById(
+          "passwordRequirements",
+        );
+
+        let validationRules = {
+          student: {
+            passwordMinLength: 6,
+            requireSpecialChar: false,
+            emailDomain: null,
+          },
+          teacher: {
+            passwordMinLength: 8,
+            requireSpecialChar: true,
+            emailDomain: "@school.edu",
+          },
+          admin: {
+            passwordMinLength: 12,
+            requireSpecialChar: true,
+            requireUppercase: true,
+            emailDomain: "@admin.org",
+          },
+        };
+
+        function updateRoleValidation() {
+          const role = roleSelect.value;
+
+          dynamicFieldContainer.innerHTML = "";
+          let dynamicInput;
+
+          if (role === "student") {
+            dynamicFieldContainer.innerHTML = `
+                      <label for="dynamicInput">Student ID (e.g. S12345):</label>
+                      <input type="text" id="dynamicInput" required>
+                      <span class="error-msg" id="dynamicInputError"></span>
+                  `;
+          } else if (role === "teacher") {
+            dynamicFieldContainer.innerHTML = `
+                      <label for="dynamicInput">Department:</label>
+                      <select id="dynamicInput">
+                          <option value="">Select Dept</option>
+                          <option value="CS">Computer Science</option>
+                          <option value="Math">Mathematics</option>
+                      </select>
+                      <span class="error-msg" id="dynamicInputError"></span>
+                  `;
+          } else if (role === "admin") {
+            dynamicFieldContainer.innerHTML = `
+                      <label for="dynamicInput">Admin Secret Key:</label>
+                      <input type="password" id="dynamicInput" required>
+                      <span class="error-msg" id="dynamicInputError"></span>
+                  `;
+          }
+
+          const newDynamicInput = document.getElementById("dynamicInput");
+          if (newDynamicInput) {
+            newDynamicInput.addEventListener("input", validateDynamicField);
+          }
+          const rules = validationRules[role];
+
+          let reqText = `Min length: ${rules.passwordMinLength}`;
+          if (rules.requireSpecialChar) reqText += `, Special Char required`;
+          if (rules.requireUppercase) reqText += `, Uppercase required`;
+          if (rules.emailDomain)
+            reqText += `, Must end with ${rules.emailDomain}`;
+
+          passwordRequirements.textContent = `Requirements for ${role}: ${reqText}`;
+
+          validateEmail();
+          validatePassword();
+          validateForm();
+        }
+
+        function setError(element, message) {
+          const errorSpan = document.getElementById(element.id + "Error");
+          if (errorSpan) {
+            errorSpan.textContent = message;
+          }
+          element.classList.add("invalid");
+          element.classList.remove("valid");
+          return false;
+        }
+
+        function setSuccess(element) {
+          const errorSpan = document.getElementById(element.id + "Error");
+          if (errorSpan) {
+            errorSpan.textContent = "";
+          }
+          element.classList.remove("invalid");
+          element.classList.add("valid");
+          return true;
+        }
+
+        function validateName() {
+          if (nameInput.value.trim().length < 3) {
+            return setError(nameInput, "Name must be at least 3 characters");
+          }
+          return setSuccess(nameInput);
+        }
+
+        function validateEmail() {
+          const role = roleSelect.value;
+          const email = emailInput.value.trim();
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+          if (!emailRegex.test(email)) {
+            return setError(emailInput, "Invalid email format");
+          }
+
+          if (validationRules[role].emailDomain) {
+            if (!email.endsWith(validationRules[role].emailDomain)) {
+              return setError(
+                emailInput,
+                `Email must end with ${validationRules[role].emailDomain}`,
+              );
+            }
+          }
+
+          return setSuccess(emailInput);
+        }
+
+        function validatePassword() {
+          const role = roleSelect.value;
+          const password = passwordInput.value;
+          const rules = validationRules[role];
+
+          if (password.length < rules.passwordMinLength) {
+            return setError(
+              passwordInput,
+              `Password too short (min ${rules.passwordMinLength})`,
+            );
+          }
+
+          if (
+            rules.requireSpecialChar &&
+            !/[!@#$%^&*(),.?":{}|<>]/.test(password)
+          ) {
+            return setError(passwordInput, "Special character required");
+          }
+
+          if (rules.requireUppercase && !/[A-Z]/.test(password)) {
+            return setError(passwordInput, "Uppercase letter required");
+          }
+
+          return setSuccess(passwordInput);
+        }
+
+        function validateConfirmPassword() {
+          if (confirmPasswordInput.value === "") {
+            return setError(confirmPasswordInput, "Please confirm password");
+          }
+          if (passwordInput.value !== confirmPasswordInput.value) {
+            return setError(confirmPasswordInput, "Passwords do not match");
+          }
+          return setSuccess(confirmPasswordInput);
+        }
+
+        function validateDynamicField() {
+          const role = roleSelect.value;
+          const input = document.getElementById("dynamicInput");
+          if (!input) return true;
+
+          const val = input.value.trim();
+          if (role === "student") {
+            if (!/^S\d{5}$/.test(val)) return setError(input, "Format: S12345");
+          } else if (role === "teacher") {
+            if (val === "") return setError(input, "Select a department");
+          } else if (role === "admin") {
+            if (val !== "admin123")
+              return setError(input, "Invalid Key (Hint: admin123)");
+          }
+          return setSuccess(input);
+        }
+
+        function validateAge() {
+          const age = parseInt(ageInput.value);
+          if (isNaN(age) || age < 18 || age > 100) {
+            return setError(ageInput, "Age must be between 18 and 100");
+          }
+          return setSuccess(ageInput);
+        }
+
+        function validateSkills() {
+          const skills = document.querySelectorAll(
+            'input[name="skills"]:checked',
+          );
+          const errorSpan = document.getElementById("skillsError");
+          if (skills.length < 2) {
+            errorSpan.textContent = "Select at least 2 skills";
+            return false;
+          }
+          errorSpan.textContent = "";
+          return true;
+        }
+
+        function validateForm() {
+          const isNameValid = validateName();
+          const isEmailValid = validateEmail();
+          const isPasswordValid = validatePassword();
+          const isConfirmValid = validateConfirmPassword();
+          const isAgeValid = validateAge();
+          const isSkillsValid = validateSkills();
+          const isDynamicValid = validateDynamicField();
+
+          if (
+            isNameValid &&
+            isEmailValid &&
+            isPasswordValid &&
+            isConfirmValid &&
+            isAgeValid &&
+            isSkillsValid &&
+            isDynamicValid
+          ) {
+            submitBtn.disabled = false;
+          } else {
+            submitBtn.disabled = true;
+          }
+        }
+
+        // Event Listeners
+        roleSelect.addEventListener("change", updateRoleValidation);
+
+        [
+          nameInput,
+          emailInput,
+          passwordInput,
+          confirmPasswordInput,
+          ageInput,
+        ].forEach((input) => {
+          input.addEventListener("input", () => {
+            switch (input.id) {
+              case "name":
+                validateName();
+                break;
+              case "email":
+                validateEmail();
+                break;
+              case "password":
+                validatePassword();
+                validateConfirmPassword();
+                break;
+              case "confirmPassword":
+                validateConfirmPassword();
+                break;
+              case "age":
+                validateAge();
+                break;
+            }
+            validateForm();
+          });
+        });
+
+        document.querySelectorAll('input[name="skills"]').forEach((cb) => {
+          cb.addEventListener("change", () => {
+            validateSkills();
+            validateForm();
+          });
+        });
+
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          alert("Registration Successful!");
+        });
+
+        updateRoleValidation();
+        submitBtn.disabled = true;
+      });
+    </script>
+  </body>
+</html>
