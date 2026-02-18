@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 1: Real-Time Username Availability Checker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 500;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .feedback {
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            min-height: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        .feedback.available {
+            color: #28a745;
+        }
+        .feedback.taken {
+            color: #dc3545;
+        }
+        .feedback.loading {
+            color: #6c757d;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-left-color: #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Register User</h2>
+    <form id="registrationForm">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Choose a username (e.g., john_doe)" autocomplete="off">
+            <div id="usernameFeedback" class="feedback"></div>
+        </div>
+        <button type="submit" id="submitBtn" disabled>Register</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const usernameInput = document.getElementById('username');
+        const feedbackEl = document.getElementById('usernameFeedback');
+        const submitBtn = document.getElementById('submitBtn');
+        let timeoutId;
+
+        // Function to simulate checking username availability
+        async function checkUsernameAvailability(username) {
+            // Show loading indicator
+            feedbackEl.innerHTML = '<span class="spinner"></span> Checking availability...';
+            feedbackEl.className = 'feedback loading';
+            submitBtn.disabled = true;
+
+            try {
+                // Simulate network delay for realism
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                // Fetch local JSON file simulating backend
+                const response = await fetch('users.json');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const existingUsers = await response.json();
+
+                // Check if username exists
+                const isTaken = existingUsers.includes(username);
+
+                // Update UI based on response
+                if (isTaken) {
+                    feedbackEl.textContent = '✖ Username already taken';
+                    feedbackEl.className = 'feedback taken';
+                    usernameInput.style.borderColor = '#dc3545';
+                    submitBtn.disabled = true;
+                } else {
+                    feedbackEl.textContent = '✔ Username available';
+                    feedbackEl.className = 'feedback available';
+                    usernameInput.style.borderColor = '#28a745';
+                    submitBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error checking username:', error);
+                feedbackEl.textContent = '⚠ Error checking availability';
+                feedbackEl.className = 'feedback taken';
+            }
+        }
+
+        usernameInput.addEventListener('input', (e) => {
+            const username = e.target.value.trim();
+            
+            // Clear previous timeout (debounce)
+            clearTimeout(timeoutId);
+
+            // Reset UI state
+            submitBtn.disabled = true;
+            usernameInput.style.borderColor = '#ddd';
+
+            if (username.length === 0) {
+                feedbackEl.textContent = '';
+                feedbackEl.className = 'feedback';
+                return;
+            }
+
+            // Set debounce timer
+            timeoutId = setTimeout(() => {
+                checkUsernameAvailability(username);
+            }, 500); // Wait 500ms after user stops typing
+        });
+
+        document.getElementById('registrationForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Registration simulated successfully!');
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 3: Student CRUD System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 2rem;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            width: 100%;
+        }
+
+        .form-container {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .table-container {
+            flex: 2;
+            min-width: 400px;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        button.delete {
+            background-color: #dc3545;
+        }
+
+        button.edit {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .message-box {
+            padding: 10px;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Student Management System (AJAX CRUD)</h2>
+
+    <div class="form-container">
+        <h3>Add / Update Student</h3>
+        <div id="formMessage" class="message-box"></div>
+        <form id="studentForm">
+            <input type="hidden" id="studentIdHidden">
+            <div class="form-group">
+                <label for="studentId">Student ID</label>
+                <input type="text" id="studentId" required placeholder="e.g. S105">
+            </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" required placeholder="Full Name">
+            </div>
+            <div class="form-group">
+                <label for="department">Department</label>
+                <select id="department" required>
+                    <option value="">Select Dept</option>
+                    <option value="CSE">CSE</option>
+                    <option value="ECE">ECE</option>
+                    <option value="MECH">MECH</option>
+                    <option value="EEE">EEE</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="marks">Marks</label>
+                <input type="number" id="marks" required min="0" max="100">
+            </div>
+            <button type="submit" id="saveBtn">Add Student</button>
+            <button type="button" id="cancelBtn" style="background-color: #6c757d; display: none;">Cancel</button>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <h3>Student List</h3>
+        <div id="tableMessage" class="message-box"></div>
+        <table id="studentTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Dept</th>
+                    <th>Marks</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows injected via JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let studentsData = [];
+        const API_URL = 'students.json'; // Simulated endpoints
+
+        // DOM Elements
+        const studentForm = document.getElementById('studentForm');
+        const tableBody = document.querySelector('#studentTable tbody');
+        const formMessage = document.getElementById('formMessage');
+        const tableMessage = document.getElementById('tableMessage');
+
+        // Initial Load (Read Operation)
+        async function fetchStudents() {
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) throw new Error('Failed to fetch data');
+                studentsData = await response.json();
+                renderTable();
+                showMessage(tableMessage, 'Data loaded successfully', 'success');
+            } catch (error) {
+                showMessage(tableMessage, 'Error loading data: ' + error.message, 'error');
+            }
+        }
+
+        // Render Table
+        function renderTable() {
+            tableBody.innerHTML = '';
+            studentsData.forEach(student => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>${student.id}</td>
+                <td>${student.name}</td>
+                <td>${student.department}</td>
+                <td>${student.marks}</td>
+                <td>
+                    <button class="edit" onclick="editStudent('${student.id}')">Edit</button>
+                    <button class="delete" onclick="deleteStudent('${student.id}')">Delete</button>
+                </td>
+            `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Create / Update Operation
+        studentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const id = document.getElementById('studentId').value;
+            const name = document.getElementById('name').value;
+            const dept = document.getElementById('department').value;
+            const marks = document.getElementById('marks').value;
+            const isUpdate = document.getElementById('studentId').disabled; // If ID field disabled, it's an update
+
+            const newStudent = { id, name, department: dept, marks };
+
+            try {
+                // Simulate AJAX Request
+                await new Promise(resolve => setTimeout(resolve, 500)); // Network delay
+
+                if (isUpdate) {
+                    // Update Logic
+                    const index = studentsData.findIndex(s => s.id === id);
+                    if (index !== -1) {
+                        studentsData[index] = newStudent;
+                        showMessage(formMessage, 'Student updated successfully!', 'success');
+                    }
+                } else {
+                    // Create Logic
+                    if (studentsData.some(s => s.id === id)) {
+                        throw new Error('Student ID already exists!');
+                    }
+                    studentsData.push(newStudent);
+                    showMessage(formMessage, 'Student added successfully!', 'success');
+                }
+
+                renderTable();
+                resetForm();
+            } catch (error) {
+                showMessage(formMessage, error.message, 'error');
+            }
+        });
+
+        // Delete Operation
+        window.deleteStudent = async (id) => {
+            if (!confirm('Are you sure you want to delete ' + id + '?')) return;
+
+            try {
+                // Simulate AJAX Delete
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                studentsData = studentsData.filter(s => s.id !== id);
+                renderTable();
+                showMessage(tableMessage, 'Student deleted successfully', 'success');
+            } catch (error) {
+                showMessage(tableMessage, 'Delete failed', 'error');
+            }
+        };
+
+        // Edit Operation (Populate Form)
+        window.editStudent = (id) => {
+            const student = studentsData.find(s => s.id === id);
+            if (student) {
+                document.getElementById('studentId').value = student.id;
+                document.getElementById('studentId').disabled = true; // Cannot simulate ID change easily
+                document.getElementById('name').value = student.name;
+                document.getElementById('department').value = student.department;
+                document.getElementById('marks').value = student.marks;
+
+                document.getElementById('saveBtn').textContent = 'Update Student';
+                document.getElementById('cancelBtn').style.display = 'inline-block';
+            }
+        };
+
+        // Reset Form
+        function resetForm() {
+            studentForm.reset();
+            document.getElementById('studentId').disabled = false;
+            document.getElementById('saveBtn').textContent = 'Add Student';
+            document.getElementById('cancelBtn').style.display = 'none';
+        }
+
+        document.getElementById('cancelBtn').addEventListener('click', resetForm);
+
+        function showMessage(element, msg, type) {
+            element.textContent = msg;
+            element.className = `message-box ${type}`;
+            element.style.display = 'block';
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 3000);
+        }
+
+        // Init
+        fetchStudents();
+    </script>
+
+</body>
+
+</html>

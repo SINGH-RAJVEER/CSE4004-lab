@@ -1,0 +1,26 @@
+[
+    {
+        "id": "S101",
+        "name": "Rajveer Singh",
+        "department": "CSE",
+        "marks": 92
+    },
+    {
+        "id": "S102",
+        "name": "Aditi Sharma",
+        "department": "ECE",
+        "marks": 88
+    },
+    {
+        "id": "S103",
+        "name": "Rohan Gupta",
+        "department": "MECH",
+        "marks": 75
+    },
+    {
+        "id": "S104",
+        "name": "Sneha Reddy",
+        "department": "CSE",
+        "marks": 95
+    }
+]

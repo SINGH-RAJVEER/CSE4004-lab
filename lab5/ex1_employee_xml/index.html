@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System (XML)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Employee Management System</h1>
+
+        <div class="card form-section">
+            <h2>Manage Employees</h2>
+            <form id="employeeForm">
+                <input type="text" id="empId" placeholder="Employee ID" required>
+                <input type="text" id="empName" placeholder="Name" required>
+                <input type="text" id="empDept" placeholder="Department" required>
+                <input type="number" id="empSalary" placeholder="Salary" required>
+
+                <div class="buttons">
+                    <button type="button" id="createBtn" class="btn primary">Add Employee</button>
+                    <button type="button" id="updateBtn" class="btn secondary">Update</button>
+                    <button type="button" id="deleteBtn" class="btn danger">Delete</button>
+                </div>
+            </form>
+            <p id="statusMessage" class="status"></p>
+        </div>
+
+        <div class="card table-section">
+            <h2>Employee Records</h2>
+            <table id="employeeTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Salary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Processed rows will appear here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

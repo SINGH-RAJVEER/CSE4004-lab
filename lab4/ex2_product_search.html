@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 2: AJAX Product Search</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .search-container {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        input#search {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        input#search:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+        }
+
+        .loading {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            display: none;
+        }
+
+        .results-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.25rem;
+            color: #2c3e50;
+        }
+
+        .card .price {
+            font-size: 1.2rem;
+            color: #27ae60;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .card .category {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: #f1f2f6;
+            padding: 4px 8px;
+            border-radius: 4px;
+            align-self: flex-start;
+        }
+
+        .no-results {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 2rem;
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .error {
+            color: #e74c3c;
+            text-align: center;
+            grid-column: 1 / -1;
+            background: #fadbd8;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Find Your Product</h1>
+
+    <div class="search-container">
+        <input type="text" id="search" placeholder="Search for products (e.g., Laptop, Phone)...">
+        <div class="loading" id="spinner">Searching...</div>
+    </div>
+
+    <div id="results" class="results-container">
+        <!-- Results will be injected here -->
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('search');
+        const resultsContainer = document.getElementById('results');
+        const spinner = document.getElementById('spinner');
+        let debounceTimer;
+
+        // Function to fetch and display products
+        async function searchProducts(query) {
+            spinner.style.display = 'block';
+            resultsContainer.innerHTML = ''; // Clear previous results
+
+            try {
+                // Simulate network delay
+                await new Promise(r => setTimeout(r, 600));
+
+                const response = await fetch('products.json');
+
+                if (!response.ok) throw new Error('Failed to fetch product data');
+
+                const products = await response.json();
+
+                // Client-side filtering
+                const filtered = products.filter(product =>
+                    product.name.toLowerCase().includes(query.toLowerCase()) ||
+                    product.category.toLowerCase().includes(query.toLowerCase())
+                );
+
+                displayResults(filtered, query);
+            } catch (error) {
+                console.error('Search error:', error);
+                resultsContainer.innerHTML = `<div class="error">Error loading products: ${error.message}</div>`;
+            } finally {
+                spinner.style.display = 'none';
+            }
+        }
+
+        function displayResults(products, query) {
+            if (products.length === 0) {
+                resultsContainer.innerHTML = `<div class="no-results">No products found for "${query}"</div>`;
+                return;
+            }
+
+            const html = products.map(product => `
+                <div class="card">
+                    <div>
+                        <h3>${product.name}</h3>
+                        <div class="category">${product.category}</div>
+                    </div>
+                    <div class="price">$${product.price}</div>
+                </div>
+            `).join('');
+
+            resultsContainer.innerHTML = html;
+        }
+
+        // Debounce implementation
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+
+            clearTimeout(debounceTimer);
+
+            if (query.length === 0) {
+                resultsContainer.innerHTML = '';
+                spinner.style.display = 'none';
+                return;
+            }
+
+            debounceTimer = setTimeout(() => {
+                searchProducts(query);
+            }, 500); // 500ms delay
+        });
+    </script>
+</body>
+
+</html>

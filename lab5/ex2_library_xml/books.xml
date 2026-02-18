@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library>
+    <book>
+        <id>B101</id>
+        <title>The Great Gatsby</title>
+        <author>F. Scott Fitzgerald</author>
+        <availability>Available</availability>
+    </book>
+    <book>
+        <id>B102</id>
+        <title>To Kill a Mockingbird</title>
+        <author>Harper Lee</author>
+        <availability>Checked Out</availability>
+    </book>
+    <book>
+        <id>B103</id>
+        <title>1984</title>
+        <author>George Orwell</author>
+        <availability>Available</availability>
+    </book>
+</library>

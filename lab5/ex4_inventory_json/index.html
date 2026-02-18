@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Inventory System (JSON)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Product Inventory System</h1>
+            <div class="summary-card">
+                <h3>Total Inventory Value</h3>
+                <div id="totalValue">$0.00</div>
+            </div>
+        </header>
+
+        <div class="grid-layout">
+            <div class="card form-section">
+                <h2>Manage Products</h2>
+                <form id="productForm">
+                    <input type="text" id="prodId" placeholder="Product ID (e.g., P001)" required>
+                    <input type="text" id="prodName" placeholder="Product Name" required>
+                    <input type="text" id="prodCategory" placeholder="Category" required>
+                    <div class="input-group">
+                        <input type="number" id="prodPrice" placeholder="Price" min="0" step="0.01" required>
+                        <input type="number" id="prodStock" placeholder="Stock Qty" min="0" required>
+                    </div>
+
+                    <div class="buttons">
+                        <button type="button" id="addBtn" class="btn primary">Add Product</button>
+                        <button type="button" id="editBtn" class="btn secondary">Update Details</button>
+                        <button type="button" id="deleteBtn" class="btn danger">Remove</button>
+                    </div>
+                    <p id="statusMessage" class="status"></p>
+                </form>
+            </div>
+
+            <div class="card list-section">
+                <div class="search-bar">
+                    <input type="text" id="categorySearch" placeholder="Search by Category...">
+                    <button id="searchBtn" class="btn info">Search</button>
+                    <button id="resetBtn" class="btn clear">Reset</button>
+                </div>
+
+                <div class="table-container">
+                    <table id="inventoryTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Product rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

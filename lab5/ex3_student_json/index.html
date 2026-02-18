@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Record System (JSON)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Student Record System</h1>
+
+        <div class="card form-section">
+            <h2>Manage Students</h2>
+            <form id="studentForm">
+                <input type="text" id="stdId" placeholder="ID (e.g., S101)" required>
+                <input type="text" id="stdName" placeholder="Name" required>
+                <input type="text" id="stdCourse" placeholder="Course" required>
+                <input type="number" id="stdMarks" placeholder="Marks" required min="0" max="100">
+
+                <div class="buttons">
+                    <button type="button" id="addBtn" class="btn primary">Add Student</button>
+                    <button type="button" id="updateBtn" class="btn secondary">Update Student</button>
+                    <button type="button" id="deleteBtn" class="btn danger">Remove Student</button>
+                </div>
+            </form>
+            <p id="statusMessage" class="status"></p>
+        </div>
+
+        <div class="card table-section">
+            <h2>Class Register</h2>
+            <div id="loading" class="loading">Loading records...</div>
+            <table id="studentTable" style="display:none;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Course</th>
+                        <th>Marks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Student rows -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

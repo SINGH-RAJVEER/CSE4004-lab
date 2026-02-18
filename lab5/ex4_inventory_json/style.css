@@ -1,0 +1,245 @@
+/* Inventory Dashboard Theme - Modern Dark */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+    min-height: 100vh;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    background: #16213e;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    font-size: 1.8rem;
+    color: #0f3460;
+    color: #e94560;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.summary-card {
+    text-align: right;
+}
+
+.summary-card h3 {
+    font-size: 0.9rem;
+    color: #a5a5a5;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#totalValue {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #4cc9f0;
+}
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 30px;
+}
+
+@media (max-width: 900px) {
+    .grid-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    background: #16213e;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+    color: #e94560;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    border-bottom: 2px solid #0f3460;
+    padding-bottom: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: #0f3460;
+    border: 1px solid #1a1a2e;
+    color: white;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #e94560;
+    outline: none;
+    box-shadow: 0 0 8px rgba(233, 69, 96, 0.3);
+}
+
+.input-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn {
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.primary {
+    background: linear-gradient(90deg, #4cc9f0, #4361ee);
+}
+
+.primary:hover {
+    background: linear-gradient(90deg, #3aa0c5, #3550c6);
+}
+
+.secondary {
+    background: linear-gradient(90deg, #f72585, #b5179e);
+}
+
+.secondary:hover {
+    background: linear-gradient(90deg, #d41f72, #961284);
+}
+
+.danger {
+    background: #e94560;
+}
+
+.danger:hover {
+    background: #c0394d;
+}
+
+.info {
+    background: #4361ee;
+    width: auto;
+    flex: 0 0 auto;
+    display: inline-block;
+    padding: 10px 20px;
+}
+
+.clear {
+    background: #6c757d;
+    width: auto;
+    flex: 0 0 auto;
+    display: inline-block;
+    padding: 10px 20px;
+}
+
+
+.status {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: 600;
+    min-height: 24px;
+}
+
+.error {
+    color: #e94560;
+}
+
+.success {
+    color: #4cc9f0;
+}
+
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    margin-bottom: 0;
+    flex: 1;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #2a2a40;
+}
+
+th {
+    background: #0f3460;
+    color: #4cc9f0;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+tr:hover {
+    background: #1a1a2e;
+}
+
+tr {
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+/* Low Stock Warning */
+.low-stock td {
+    color: #e94560;
+    /* Red text for low stock */
+    font-weight: 600;
+}
+
+/* Selected row highlight */
+.selected {
+    background: #2a2a40 !important;
+    border-left: 4px solid #4cc9f0;
+}
