@@ -96,6 +96,8 @@ function addProduct() {
 }
 
 function updateProduct() {
+    if (!validateForm()) return;
+
     const id = document.getElementById('prodId').value;
     const index = inventoryData.findIndex(p => p.id === id);
 
@@ -148,11 +150,17 @@ function refreshUI() {
 
 function validateForm() {
     const id = document.getElementById('prodId').value;
-    const name = document.getElementById('prodName').value;
+    const category = document.getElementById('prodCategory').value;
     const price = document.getElementById('prodPrice').value;
+    const stock = document.getElementById('prodStock').value;
 
-    if (!id || !name || !price) {
-        showStatus("ID, Name and Price are required", "error");
+    if (!id || !name || !category || !price || !stock) {
+        showStatus("All fields are required", "error");
+        return false;
+    }
+
+    if (isNaN(parseFloat(price)) || isNaN(parseInt(stock))) {
+        showStatus("Price and Stock must be valid numbers", "error");
         return false;
     }
     return true;

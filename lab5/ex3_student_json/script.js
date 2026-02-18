@@ -120,11 +120,11 @@ function removeStudent() {
 
 function validateForm() {
     const id = document.getElementById('stdId').value;
-    const name = document.getElementById('stdName').value;
+    const course = document.getElementById('stdCourse').value;
     const marks = document.getElementById('stdMarks').value;
 
-    if (!id || !name || !marks) {
-        showStatus("Please fill required fields", "error");
+    if (!id || !name || !course || !marks) {
+        showStatus("Please fill all required fields", "error");
         return false;
     }
     return true;

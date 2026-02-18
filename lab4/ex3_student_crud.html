@@ -225,7 +225,7 @@
             const marks = document.getElementById('marks').value;
             const isUpdate = document.getElementById('studentId').disabled; // If ID field disabled, it's an update
 
-            const newStudent = { id, name, department: dept, marks };
+            const newStudent = { id, name, department: dept, marks: parseInt(marks) || 0 };
 
             try {
                 // Simulate AJAX Request
